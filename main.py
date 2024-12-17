@@ -58,6 +58,7 @@ def create_settings():
         "FONT": "./fonts/8-BIT WONDER.TTF",
 
         "CARD_MOMENTUM_KEEP": 0.9,
+        "CARD_OVERSHOOT": 0.8,
         "CARD_ACCEL": 200,
         "CARD_TURN_RATE": 10
     }
