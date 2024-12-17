@@ -96,11 +96,11 @@ class Card(Object):
         if button == 1:
             common.selected.set_selected(self)
         elif button == 3 and not self.turn:
-            self.prev_x = self.x
             self.flip_sfx.play()
             self.turn = True
 
     def update(self):
+        self.prev_x = self.x
         if self.speed == 0 and common.selected.get_selected() is not self:
             return
 
@@ -134,4 +134,3 @@ class Card(Object):
 
         self.x += dx * common.dt * self.speed
         self.y += dy * common.dt * self.speed
-        self.prev_x = self.x
