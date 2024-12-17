@@ -1,3 +1,5 @@
+import os
+
 from pygame.locals import *
 
 import common
@@ -22,11 +24,11 @@ def keyboard_handler(evt):
     if evt.key == K_r:
         common.deck.start_shuffle()
     elif evt.key == K_ESCAPE:
-        quit()
+        os._exit(0)
 
 
 def quit_handler(evt):
-    quit()
+    os._exit(0)
 
 
 linker = {
