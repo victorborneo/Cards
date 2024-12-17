@@ -134,3 +134,4 @@ class Card(Object):
 
         self.x += dx * common.dt * self.speed
         self.y += dy * common.dt * self.speed
+        self.prev_x = self.x
