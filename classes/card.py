@@ -6,12 +6,6 @@ from pygame.mouse import get_pos
 from pygame.mouse import get_pressed
 
 import common
-from consts import WIDTH
-from consts import HEIGHT
-from consts import SFX_VOLUME
-from consts import CARD_MOMENTUM_KEEP
-from consts import CARD_ACCEL
-from consts import CARD_TURN_RATE
 from functions import scale_sprite
 from classes.object import Object
 
@@ -27,7 +21,7 @@ class Card(Object):
         self.sprite = scale_sprite(f"./sprites/{suit}_{rank}.png")
         self.back_sprite = scale_sprite(f"./sprites/back_{back}.png")
         self.width, self.height = self.sprite.get_size()
-        self.accel = CARD_ACCEL
+        self.accel = common.settings["CARD_ACCEL"]
         self.speed = 0
         self.max_speed = self.accel * 10
 
@@ -37,12 +31,12 @@ class Card(Object):
         self.turn = False
         self.max_turn = 1
         self.turning = self.max_turn
-        self.turn_rate = -CARD_TURN_RATE
+        self.turn_rate = -common.settings["CARD_TURN_RATE"]
         self.rotate = 1
         self.prev_x = None
 
         self.flip_sfx = mixer.Sound("./audio/flip.mp3")
-        self.flip_sfx.set_volume(SFX_VOLUME)
+        self.flip_sfx.set_volume(common.settings["SFX_VOLUME"])
 
     def turn_animation(self, sprite):
         self.turning += self.turn_rate * common.dt
@@ -107,8 +101,8 @@ class Card(Object):
         mouse_x, mouse_y = get_pos()
         center_x, center_y = self.x + self.width // 2, self.y + self.height // 2
 
-        if not (0 <= center_x <= WIDTH and 0 <= center_y <= HEIGHT):
-            mouse_x, mouse_y = WIDTH // 2, HEIGHT // 2
+        if not (0 <= center_x <= common.settings["WIDTH"] and 0 <= center_y <= common.settings["HEIGHT"]):
+            mouse_x, mouse_y = common.settings["WIDTH"] // 2, common.settings["HEIGHT"] // 2
             self.dx = mouse_x - center_x
             self.dy = mouse_y - center_y
             if common.selected.get_selected() is self:
@@ -130,7 +124,7 @@ class Card(Object):
             if self.speed < self.max_speed:
                 self.speed += self.accel
         else:
-            self.speed = math.floor(self.speed * CARD_MOMENTUM_KEEP)
+            self.speed = math.floor(self.speed * common.settings["CARD_MOMENTUM_KEEP"])
 
         self.x += dx * common.dt * self.speed
         self.y += dy * common.dt * self.speed

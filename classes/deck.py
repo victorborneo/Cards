@@ -5,8 +5,6 @@ from pygame import mixer
 import common
 from classes.card import Card
 from functions import scale_sprite
-from consts import WIDTH
-from consts import SFX_VOLUME
 from classes.object import Object
 
 
@@ -26,8 +24,8 @@ class Deck(Object):
 
         self.draw_sfx = mixer.Sound("./audio/draw.mp3")
         self.shuffle_sfx = mixer.Sound("./audio/shuffle.mp3")
-        self.draw_sfx.set_volume(SFX_VOLUME)
-        self.shuffle_sfx.set_volume(SFX_VOLUME)
+        self.draw_sfx.set_volume(common.settings["SFX_VOLUME"])
+        self.shuffle_sfx.set_volume(common.settings["SFX_VOLUME"])
 
     def init_deck(self):
         deck = []
@@ -43,7 +41,7 @@ class Deck(Object):
                         rank, suit, self.back
                     )
                 )
-                c += WIDTH / 4000
+                c += common.settings["WIDTH"] / 4000
 
         deck.append(
             Card(
@@ -73,7 +71,7 @@ class Deck(Object):
         for card in self.deck:
             card.x = self.x + c
             card.y = self.y - c
-            c += WIDTH / 4000
+            c += common.settings["WIDTH"] / 4000
 
     def draw(self):
         for card in self.deck:
@@ -93,9 +91,9 @@ class Deck(Object):
                 self.shuffle_wait = False
 
         if self.shuffle_wait_secs == 0:
-            self.dx = (WIDTH // 2 - self.width // 2) - self.x
+            self.dx = (common.settings["WIDTH"] // 2 - self.width // 2) - self.x
         else:
-            self.dx = -WIDTH - self.x
+            self.dx = -common.settings["WIDTH"] - self.x
 
         self.x += common.dt * 5 * self.dx
         for card in self.deck[::-1]:
@@ -121,8 +119,8 @@ class Deck(Object):
 
         x, y = click_pos
 
-        if self.x + self.size * (WIDTH / 4000) <= x <= self.x + self.width + self.size * (WIDTH / 4000) and \
-                self.y - self.size * (WIDTH / 4000) <= y <= self.y + self.height - self.size * (WIDTH / 4000):
+        if self.x + self.size * (common.settings["WIDTH"] / 4000) <= x <= self.x + self.width + self.size * (common.settings["WIDTH"] / 4000) and \
+                self.y - self.size * (common.settings["WIDTH"] / 4000) <= y <= self.y + self.height - self.size * (common.settings["WIDTH"] / 4000):
             return True
 
         return False

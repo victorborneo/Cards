@@ -4,11 +4,13 @@ def init():
     global objs
     global texts
     global window
+    global settings
 
     dt = 0
     objs = []
     texts = []
     window = None
+    settings = None
 
     # Game specific
     global selected
