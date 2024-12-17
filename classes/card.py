@@ -114,7 +114,7 @@ class Card(Object):
             if common.selected.get_selected() is self:
                 common.selected.clear()
 
-        if get_pressed()[0] and common.selected.get_selected() is self:
+        if get_pressed()[0] and common.selected.get_selected() is self and not self.turn:
             self.dx = mouse_x - center_x
             self.dy = mouse_y - center_y
 
