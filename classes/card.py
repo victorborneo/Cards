@@ -2,12 +2,16 @@ import math
 
 from pygame import mixer
 from pygame.transform import scale
+from pygame.transform import rotate
 from pygame.mouse import get_pos
 from pygame.mouse import get_pressed
 
 import common
 from functions import scale_sprite
 from classes.object import Object
+
+
+PI = 3.1415
 
 
 class Card(Object):
@@ -20,6 +24,7 @@ class Card(Object):
         self.orientation = -1  # -1 = face down, 1 = face up
         self.sprite = scale_sprite(f"./sprites/{suit}_{rank}.png")
         self.back_sprite = scale_sprite(f"./sprites/back_{back}.png")
+        self.rot_angle = 0
         self.width, self.height = self.sprite.get_size()
         self.accel = common.settings["CARD_ACCEL"]
         self.speed = 0
@@ -36,7 +41,9 @@ class Card(Object):
         self.prev_x = None
 
         self.flip_sfx = mixer.Sound("./audio/flip.mp3")
+        self.hit_sfx = mixer.Sound("./audio/hit.mp3")
         self.flip_sfx.set_volume(common.settings["SFX_VOLUME"])
+        self.hit_sfx.set_volume(common.settings["SFX_VOLUME"])
 
     def turn_animation(self, sprite):
         self.turning += self.turn_rate * common.dt
@@ -72,6 +79,8 @@ class Card(Object):
         if self.turn:
             sprite = self.turn_animation(sprite)
 
+        if self.rot_angle != 0:
+            sprite = rotate(sprite, self.rot_angle)
         common.window.blit(sprite, (self.x, self.y))
 
     def clicked(self, click_pos):
@@ -95,6 +104,7 @@ class Card(Object):
 
     def update(self):
         self.prev_x = self.x
+
         if self.speed == 0 and common.selected.get_selected() is not self:
             return
 
@@ -106,6 +116,7 @@ class Card(Object):
             self.dx = mouse_x - center_x
             self.dy = mouse_y - center_y
             if common.selected.get_selected() is self:
+                self.hit_sfx.play()
                 common.selected.clear()
 
         if get_pressed()[0] and common.selected.get_selected() is self and not self.turn:
@@ -118,8 +129,10 @@ class Card(Object):
             dx = self.dx / dist
             dy = self.dy / dist
 
-        if dist < 15:
-            self.speed = math.floor(self.speed * 0.5)
+        self.rot_angle = 60 * (self.speed / self.max_speed) * -dx
+
+        if dist < self.width * common.settings["CARD_OVERSHOOT"]:
+            self.speed = max(math.floor(self.speed * common.settings["CARD_OVERSHOOT"]), dist)
         elif get_pressed()[0] and common.selected.get_selected() is self:
             if self.speed < self.max_speed:
                 self.speed += self.accel
