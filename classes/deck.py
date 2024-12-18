@@ -126,11 +126,17 @@ class Deck(Object):
         return False
 
     def on_click(self, button):
-        if button != 1:
+        if button != 1 and button != 3:
             return
 
         card = self.deck.pop()
-        self.size -= 1
-        common.selected.set_selected(card)
         common.objs.append(card)
-        self.draw_sfx.play()
+        self.size -= 1
+
+        if button == 1:
+            common.selected.set_selected(card)
+            self.draw_sfx.play()
+        elif button == 3:
+            card.on_click(button)
+
+
