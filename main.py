@@ -43,26 +43,25 @@ def create_settings():
     default = {
         "GAMENAME": "Cards",
         "ICONDIR": "./icon.ico",
-
         "FPS": 120,
         "WIDTH": 800,
         "HEIGHT": 600,
         "SCALE": 0.25,
-
-        "BG_COLOR": [120, 120, 120],
-
+        "BG_COLOR": [
+            120,
+            120,
+            120
+        ],
         "BGM": "./audio/bgm.wav",
         "BGM_VOLUME": 0.3,
         "SFX_VOLUME": 0.5,
-
         "FONT": "./fonts/8-BIT WONDER.TTF",
-
         "CARD_MOMENTUM_KEEP": 0.9,
         "CARD_OVERSHOOT": 0.8,
-        "CARD_ACCEL": 250,
+        "CARD_ACCEL": 75,
         "CARD_TURN_RATE": 10,
         "CARD_MAX_ANGLE": 60
-    }
+        }
 
     with open("./settings.json", mode="w") as f:
         json.dump(default, f, indent=4)
