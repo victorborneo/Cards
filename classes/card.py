@@ -28,7 +28,7 @@ class Card(Object):
         self.width, self.height = self.sprite.get_size()
         self.accel = common.settings["CARD_ACCEL"]
         self.speed = 0
-        self.max_speed = self.accel * 10
+        self.max_speed = self.accel * 100
 
         self.dx = None
         self.dy = None
@@ -129,13 +129,14 @@ class Card(Object):
             dx = self.dx / dist
             dy = self.dy / dist
 
-        self.rot_angle = 60 * (self.speed / self.max_speed) * -dx
+        self.rot_angle = common.settings["CARD_MAX_ANGLE"] * (self.speed / self.max_speed) * -dx
 
-        if dist < self.width * common.settings["CARD_OVERSHOOT"]:
-            self.speed = max(math.floor(self.speed * common.settings["CARD_OVERSHOOT"]), dist)
-        elif get_pressed()[0] and common.selected.get_selected() is self:
-            if self.speed < self.max_speed:
-                self.speed += self.accel
+        if get_pressed()[0] and common.selected.get_selected() is self:
+            if dist < self.width * common.settings["CARD_OVERSHOOT"] // 2:
+                self.speed = max(math.floor(self.speed * common.settings["CARD_OVERSHOOT"]), dist)
+            else:
+                if self.speed < self.max_speed:
+                    self.speed += self.accel
         else:
             self.speed = math.floor(self.speed * common.settings["CARD_MOMENTUM_KEEP"])
 
