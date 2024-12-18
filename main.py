@@ -59,8 +59,9 @@ def create_settings():
 
         "CARD_MOMENTUM_KEEP": 0.9,
         "CARD_OVERSHOOT": 0.8,
-        "CARD_ACCEL": 200,
-        "CARD_TURN_RATE": 10
+        "CARD_ACCEL": 250,
+        "CARD_TURN_RATE": 10,
+        "CARD_MAX_ANGLE": 60
     }
 
     with open("./settings.json", mode="w") as f:
