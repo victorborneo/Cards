@@ -62,7 +62,8 @@ class Card(Object):
             self.rotate *= -1
 
         if self.turning >= self.max_turn:
-            self.x = self.prev_x
+            if self.speed == 0:
+                self.x = self.prev_x
             self.turning = self.max_turn
             self.turn = False
             self.turn_rate *= -1
@@ -81,6 +82,7 @@ class Card(Object):
 
         if self.rot_angle != 0:
             sprite = rotate(sprite, self.rot_angle)
+
         common.window.blit(sprite, (self.x, self.y))
 
     def clicked(self, click_pos):
@@ -99,12 +101,11 @@ class Card(Object):
         if button == 1:
             common.selected.set_selected(self)
         elif button == 3 and not self.turn:
+            self.prev_x = self.x
             self.flip_sfx.play()
             self.turn = True
 
     def update(self):
-        self.prev_x = self.x
-
         if self.speed == 0 and common.selected.get_selected() is not self:
             return
 
@@ -119,7 +120,7 @@ class Card(Object):
                 self.hit_sfx.play()
                 common.selected.clear()
 
-        if get_pressed()[0] and common.selected.get_selected() is self and not self.turn:
+        if get_pressed()[0] and common.selected.get_selected() is self:
             self.dx = mouse_x - center_x
             self.dy = mouse_y - center_y
 
