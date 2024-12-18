@@ -132,7 +132,7 @@ class Card(Object):
         self.rot_angle = common.settings["CARD_MAX_ANGLE"] * (self.speed / self.max_speed) * -dx
 
         if get_pressed()[0] and common.selected.get_selected() is self:
-            if dist < self.width * common.settings["CARD_OVERSHOOT"] // 2:
+            if dist < self.width * common.settings["CARD_OVERSHOOT"]:
                 self.speed = max(math.floor(self.speed * common.settings["CARD_OVERSHOOT"]), dist)
             else:
                 if self.speed < self.max_speed:
